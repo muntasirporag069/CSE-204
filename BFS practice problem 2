@@ -1,0 +1,65 @@
+#include<bits/stdc++.h>
+#define endl "\n"
+#define in long long
+#define dub double
+#define dubb long double
+using namespace std;
+
+in par[10000],vis[10000],dis[10000];
+in r[10000],b[10000];
+vector<in>seq;
+void bfs(vector<in>*v,in st)
+{
+    par[st]=-1;
+    dis[st]=0;
+    vis[st]=1;
+    r[st]=1;
+    queue<in>q;
+    q.push(st);
+    while(!q.empty())
+    {
+        in cur=q.front();
+        seq.push_back(cur);
+        q.pop();
+        for(auto it=v[cur].begin();it!=v[cur].end();it++)
+        {
+            if(vis[*it]) continue;
+            vis[*it]=1;
+            if(r[cur]) b[*it]=1;
+            else r[*it]=1;
+            dis[*it]=dis[cur]+1;
+            par[*it]=cur;
+            q.push(*it);
+        }
+
+    }
+}
+int main()
+{
+    ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+    in i,j,k,n,c=0,s=0,f=0,t,x,e,y;
+    cin>>n>>e;
+    vector<in>v[n+1];
+    vector<pair<in,in>>p;
+    for(i=0;i<e;i++){
+        cin>>x>>y;
+        v[x].push_back(y);
+        v[y].push_back(x);
+        p.push_back({x,y});
+    }
+    for (i=0;i<n+1;i++){
+        if(!vis[i]) bfs(&v[0],i);
+    }
+    for(auto it=p.begin();it!=p.end();it++)
+    {
+        if((r[it->first] && r[it->second])||(b[it->first] && b[it->second]))
+           {
+               f=1;
+               break;
+           }
+    }
+    if(!f) cout<<"YES\n";
+    else cout<<"NO\n";
+    return 0;
+}
+
