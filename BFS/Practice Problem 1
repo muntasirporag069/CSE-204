@@ -1,0 +1,78 @@
+#include<bits/stdc++.h>
+#define endl "\n"
+#define in long long
+#define dub double
+#define dubb long double
+using namespace std;
+
+//in vis[10000],dis[10000];
+map<string,vector<string>>m;
+map<string,in>vis,dis;
+map<string,string>par;
+vector<string>seq;
+void bfs(string st)
+{
+    par[st]="";
+    dis[st]=0;
+    vis[st]=1;
+    queue<string>q;
+    q.push(st);
+    while(!q.empty())
+    {
+        string cur=q.front();
+        seq.push_back(cur);
+        q.pop();
+        for(auto it=m[cur].begin();it!=m[cur].end();it++)
+        {
+            if(vis[*it]) continue;
+            vis[*it]=1;
+            dis[*it]=dis[cur]+1;
+            par[*it]=cur;
+            q.push(*it);
+        }
+
+    }
+}
+int main()
+{
+    ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+    in i,j,k,n,c=0,s=0,f=0,t,e;
+    string x,y;
+    cin>>e;
+//    vector<string>v[e+1];
+
+    while(e--){
+        cin>>x>>y;
+        m[x].push_back(y);
+        m[y].push_back(x);
+    }
+    bfs("C:");
+//    for(auto it=seq.begin();it!=seq.end();it++)
+//    {
+//        cout<<*it<<" ";
+//    }
+//    cout<<"\n";
+    cin>>t;
+    while(t--){
+        cin>>x;
+        if(x=="C:") cout<<"C:\n0\n";
+        else if(dis[x]){
+            vector<string>v;
+            y=x;
+            while(y!=""){
+                v.push_back(par[y]);
+                y=par[y];
+            }
+            for(i=v.size()-2;i>=0;i--){
+                cout<<v[i]<<"\\\\";
+            }
+            cout<<x<<"\n";
+            cout<<dis[x]*2<<"\n";
+        }
+        else{
+            cout<<"File not found\n-1\n";
+        }
+    }
+    return 0;
+}
+
