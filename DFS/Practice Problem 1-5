@@ -1,0 +1,381 @@
+1./*#include<bits/stdc++.h>
+#define white 0
+#define grey 1
+#define black 2
+using namespace std;
+class graph
+{
+   map<int,vector<int>>m;
+   map<int,int>color,discover_time,traverses_time;
+   vector<int>dfs_traversal;
+   int no_of_vertices,no_of_edges,count=0;
+   public:
+   graph(int no_of_vertices,int no_of_edges)
+   {
+       this->no_of_edges=no_of_edges;
+       this->no_of_vertices=no_of_vertices;
+       for(int i=0;i<no_of_edges;i++)
+       {
+           color[i]=white;
+       }
+   }
+   
+   void add_graph()
+   {
+       for(int i=0;i<no_of_edges;i++)
+       {
+           cout<<"Enter parent vertex : ";
+           int u;
+           cin>>u;
+           cout<<"Enter child vertex : ";
+           int v;
+           cin>>v;
+           m[u].push_back(v);
+       }
+   }
+   void print_graph()
+   {
+       map<int,vector<int>>::iterator it;
+       for(it=m.begin();it!=m.end();it++)
+       {
+           vector<int>::iterator it2;
+           for(it2=m[it->first].begin();it2!=m[it->first].end();it2++)
+           {
+               cout<<" -> "<<*it2;
+           }
+       }
+   }
+   void dfstraversal(int vertex)
+   {
+       color[vertex]=grey;
+       count++;
+       discover_time[vertex]=count;
+       for(int i=0;i<m[vertex].size();i++)
+       {
+           dfstraversal(m[vertex][i]);
+       }
+       color[vertex]=black;
+       count++;
+       traverses_time[vertex]=count;
+       dfs_traversal.push_back(vertex);
+   }
+   void dfs()
+   {
+       map<int,int>::iterator it;
+       for(it=color.begin();it!=color.end();it++)
+       {
+           if(it->second==white)
+           {
+               dfstraversal(it->first);
+           }
+       }
+   }
+   void print_dfs()
+   {
+       cout<<"DFS TRAVERSAL: ";
+       for(int i=0;i<dfs_traversal.size();i++)
+       {
+           cout<<" -> "<<dfs_traversal[i];
+       }
+   }
+   void printtime()
+   {
+       map<int,int>::iterator it;
+       for(it=discover_time.begin();it!=discover_time.end();it++)
+       {
+           cout<<it->first<<" "<<it->second<<endl;
+           cout<<it->first<<" "<<traverses_time[it->first]<<endl<<endl;
+       }
+   }
+};
+int main()
+{
+    graph g(9,8);
+    g.add_graph();
+    g.print_graph();
+    g.dfs();
+    g.print_dfs();
+    g.printtime();
+}*/
+2./*#include<bits/stdc++.h>
+using namespace std;
+string lands[1000];
+int row,column,count=0;
+int visit[1000][1000];
+
+void dfs(int r,int c)
+{
+    if(r<0||r>=row||c<0||c>=column||lands[r][c]=='#'||visit[r][c]==1)
+        return;
+    visit[r][c]=1;
+    count++;
+    dfs(r-1,c);
+    dfs(r,c-1);
+    dfs(r+1,c);
+    dfs(r,c+1);
+}
+int main()
+{
+    int cases;
+    cin>>cases;
+    for(int p=1;p<=cases;p++)
+    {
+        cin>>column>>row;
+        for(int i=0;i<row;i++)
+        {
+            for(int j=0;j<column;j++)
+            {
+                visit[i][j]=0;
+            }
+        }
+    for(int i=0;i<row;i++)
+    {
+        cin>>lands[i];
+    }
+    for(int i=0;i<row;i++)
+        {
+            for(int j=0;j<column;j++)
+            {
+                if(lands[i][j]=='@')
+                {
+                    dfs(i,j);
+                }
+            }
+        }
+        cout<<" Case "<<p<<" : "<<count<<endl;
+}
+return 0;
+}*/
+3./*#include<bits/stdc++.h>
+using namespace std;
+vector<int> tree[30001];
+int p;
+map<pair<int,int>,int>weight;
+map<int,int>dis;
+map<int,bool>visited;
+void dfs(int node)
+{
+    visited[node]=true;
+    for(int i=0;i<tree[node].size();i++)
+    {
+        p=tree[node][i];
+        if(!visited[p])
+        {
+            dis[p]+=dis[node]+weight[{node,p}];
+            dfs(p);
+        }
+    }
+}
+
+void reset()
+    {
+        for(int i=0;i<30001;i++)
+        {
+            tree[i].clear();
+        }
+        weight.clear();
+        dis.clear();
+        visited.clear();
+    }
+    
+int main()
+{
+    int t,n,u,v,w,max_dis,leaf;
+    cin>>t;
+    for(int i=0;i<t;i++)
+    {
+        cin>>n;
+        for(int k=1;k<n;k++)
+        {
+            cin>>u>>v>>w;
+            tree[u].push_back(v);
+            tree[v].push_back(u);
+            weight[{u,v}]=w;
+            weight[{v,u}]=w;
+        }
+        dfs(0);
+        max_dis=0;
+        map<int,int>::iterator it;
+        for(it=dis.begin();it!=dis.end();it++)
+        {
+            if(max_dis<it->second)
+            {
+                max_dis=it->second;
+                leaf=it->first;
+            }
+        }
+        dis.clear();
+        visited.clear();
+        dfs(leaf);
+        max_dis=0;
+        for(it=dis.begin();it!=dis.end();it++)
+        {
+            if(max_dis<it->second)
+            {
+                max_dis=it->second;
+            }
+        }
+        cout<<" Case "<<i+1<<" : "<<max_dis<<endl;
+        reset();
+    }
+    return 0;
+    
+}*/
+4./*#include<bits/stdc++.h>
+using namespace std;
+char oilmine[102][102];
+bool visited[102][102];
+ int m=1,n;
+void dfs(int i,int k)
+{
+    visited[i][k]=true;
+    if(!visited[i-1][k]&&((i-1)<m&&k<n)&&oilmine[i-1][k]=='@') dfs(i-1,k);
+    if(!visited[i][k-1]&&(i<m&&(k-1)<n)&&oilmine[i][k-1]=='@') dfs(i,k-1);
+    if(!visited[i][k+1]&&(i<m&&(k+1)<n)&&oilmine[i][k+1]=='@') dfs(i,k+1);
+    if(!!visited[i+1][k]&&((i+1)<m&&k<n)&&oilmine[i+1][k]=='@') dfs(i+1,k);
+    if(!visited[i-1][k-1]&&((i-1)<m&&(k-1)<n)&&oilmine[i-1][k-1]=='@') dfs(i-1,k-1);
+    if(!visited[i-1][k+1]&&((i-1)<m&&(k+1)<n)&&oilmine[i-1][k+1]=='@') dfs(i-1,k+1);
+    if(!visited[i+1][k-1]&&((i+1)<m&&(k-1)<n)&&oilmine[i+1][k-1]=='@') dfs(i+1,k-1);
+    if(!!visited[i+1][k+1]&&((i+1)<m&&(k+1)<n)&&oilmine[i+1][k+1]=='@') dfs(i+1,k+1);
+}
+void reset()
+{
+    for(int i=0;i<102;i++)
+    {
+        for(int j=0;j<102;j++)
+        {
+            oilmine[i][j]='*';
+            visited[i][j]=false;
+        }
+    }
+}
+int main()
+{
+   
+    for(int i=0;i<102;i++)
+    {
+        for(int j=0;j<102;j++)
+        {
+            oilmine[i][j]='*';
+        }
+    }
+    int count=0;
+    while(true)
+    {
+        cin>>m>>n;
+        if(!m)break;
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                cin>>oilmine[i][j];
+            }
+        }
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(!visited[i][j]&&oilmine[i][j]=='@')
+                {
+                    dfs(i,j);
+                    count++;
+                }
+            }
+        }
+        cout<<count<<endl;
+        reset();
+    }
+    return 0;
+}*/
+5.#include<bits/stdc++.h>
+using namespace std;
+char board[202][202];
+int visited[202][202];
+int n=1;
+void dfs(int i,int k,char sym)
+{
+    visited[i][k]=true;
+    if(!visited[i-1][k-1] and (i-1<n and k-1<n) and board[i-1][k-1]==sym) dfs(i-1,k-1,sym);
+    if(!visited[i-1][k] and (i-1<n and k<n) and board[i-1][k]==sym) dfs(i-1,k,sym);
+    if(!visited[i][k-1] and (i<n and k-1<n) and board[i][k-1]==sym) dfs(i,k-1,sym);
+    if(!visited[i][k+1] and (i<n and k+1<n) and board[i][k+1]==sym) dfs(i,k+1,sym);
+    if(!visited[i+1][k] and (i+1<n and k<n) and board[i+1][k]==sym) dfs(i+1,k,sym);
+    if(!visited[i+1][k+1] and (i+1<n and k+1<n) and board[i+1][k+1]==sym) dfs(i+1,k+1,sym);
+}
+void reset()
+{
+    for(int i=0;i<202;i++)
+    {
+        for(int j=0;j<202;j++)
+        {
+            board[i][j]='\0';
+            visited[i][j]=false;
+        }
+    }
+}
+
+int main()
+{
+    bool white,black;
+    int t;
+    for(int i=0;i<202;i++)
+    {
+        for(int j=0;j<202;j++)
+        {
+            board[i][j]='\0';
+        }
+    }
+    while(true)
+    {
+        cin>>n;
+        if(!n)break;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                cin>>board[i][j];
+            }
+        }
+        white=black=false;
+        for(int i=0;i<n;i++)
+        {
+            if(board[i][0]=='w' && !visited[i][0])
+            {
+                dfs(i,0,'w');
+            }
+        }
+        for(int i=0;i<n;i++)
+        {
+            if(visited[i][n-1] && board[i][n-1]=='w')
+            {
+                white=true;
+                break;
+            }
+        }
+        if(!white)
+        {
+            for(int i=0;i<n;i++)
+            {
+                if(board[0][i]=='b' && !visited[0][i])
+            {
+                dfs(0,i,'b');
+            }
+            }
+        }
+            for(int i=0;i<n;i++)
+        {
+            if(visited[n-1][i] && board[n-1][i]=='b')
+            {
+                white=true;
+                break;
+            }
+        }
+        cout<<++t<<" ";
+        if(white) cout<<'W'<<endl;
+        else cout<<'B'<<endl;
+        reset();
+    }
+    return 0;
+}
+
+
