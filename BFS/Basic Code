@@ -1,0 +1,107 @@
+///Breadth First Search
+///linear searching isn't possible in graph
+///possible seareching: level wise & dfs
+///level of source = 1
+///level(vertex)=1+level of predecessors:when a vertex has a unique precdessors
+///when a vertex hasn't a unique precdessors:level(vertex)=1+minimum level of it's predecessors
+///one vertex can't have multiple parent
+#include<bits/stdc++.h>
+using namespace std;
+
+int n,e;
+int adj[100][100];
+int level [100],visited[100],parent[100];
+
+void bfs(int s)
+{
+    queue<int>q;
+    q.push(s);
+    level[s]=0;
+    visited[s]=1;
+    parent[s]=-1;
+    
+    while(q.size()>0)
+    {
+        int senior=q.front();
+        q.pop();
+        
+        for(int i=0;i<n;i++)
+        {
+            if (adj[senior][i]==1)
+            {
+               int junior=i;
+               if(visited[junior]==0)
+               {
+               q.push(junior);
+               visited[junior]=1;
+               parent[junior]=senior;
+               level[junior]=level[senior]+1;
+               }
+            }
+        }
+    }
+}
+
+int main()
+{
+    ///directed Graph
+    /*///inputting in matrix
+    int n;///number of vertex
+    cin>>n;
+    int adj[n][n];
+    int e;
+    cin>>e;
+    for(int i=1;i<=e;i++)
+    {
+        cin>>u>>v;
+        adj[u][v]=1;
+    }
+    ///inputting in list
+    int n;
+    cin>>n;
+    int e;
+    cin>>e;
+    vector<int> adj[n];
+    for(int i=1;i<=e;i++)
+    {
+        cin>>u>>v;
+        adj[u].push_back(v);
+    }*/
+    
+    ///undirected graph
+    /*///inputting in matrix
+    int n;///number of vertex
+    cin>>n;
+    int adj[n][n];
+    int e;
+    cin>>e;
+    for(int i=1;i<=e;i++)
+    {
+        cin>>u>>v;
+        adj[u][v]=1;
+        adj[v][u]=1;
+    }
+    ///inputting in list
+    int n;
+    cin>>n;
+    int e;
+    cin>>e;
+    vector<int> adj[n];
+    for(int i=1;i<=e;i++)
+    {
+        cin>>u>>v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }*/
+    cin>>n>>e;
+    for(int i=1;i<=e;i++)
+    {
+        int u,v;
+        cin>>u>>v;
+        adj[u][v]=1;//line 20
+        //adj[v][u]=1;//line 45
+        
+    }
+    bfs(0);
+    
+}
