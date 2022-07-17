@@ -82,6 +82,32 @@ public:
         inOrder(node->right);
         return;
     }
+    
+    void preorder(Node *node)
+    {
+        if (node == NULL)
+             return;
+        printPreorder(node->left);
+        cout << node->data << " ";
+        printPreorder(node->right);
+        return;
+        
+    }
+    
+    void postorder(Node *node)
+    {
+    if (node == NULL)
+        return;
+  
+    // first recur on left subtree
+    printPostorder(node->left);
+  
+    // then recur on right subtree
+    printPostorder(node->right);
+  
+    // now deal with the node
+    cout << node->data << " ";
+    }
 
 private:
     Node* findSuccessor(Node *node){
